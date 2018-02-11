@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<rules >
+	<organization>
+		<url>www.kiwa.tech</url>
+	</organization>
+
+    <description>
+        Configuration for the rule list which stores the rule information in-memory and executed by rule engine service.
+    </description>
+
+    <rule id="totallist" exe_class="" method="" parent="">
+        <property name="content" value="客户身份证号码规则"/>
+        <property name="result" value="RESULT.REJECTED" desc="拒绝"/>
+        <property name="continue_flag" value="1"/>
+        <property name="group_express" value="(blacklist || graylist)"/>
+		<property name="priority" value="00010"/>
+    </rule>
+
+    <rule id="blacklist" parent="totallist">
+        <property name="content" value="客户身份证号码命中内部黑名单"/>
+        <property name="exe_sql" value="select count(1) from customer_black_list inner join user_basicinfo on
+        					user_basicinfo.CERTIFICATE_NUMBER = customer_black_list.certificate_no  where customer_black_list.certificate_type >=1 and
+        					user_basicinfo.customer_no = ? and customer_black_list.is_black = 1"/>
+        <property name="param" value="CUSTOMER_NO" type="java.lang.String" desc="客户编号"/>
+        <property name="comparison_code" value="02"/>
+        <property name="comparison_value" value="&gt;"/>
+        <property name="baseline" value="0"/>
+        <property name="baseline_desc" value="客户的身份证号码在黑名单表个数中大于0"/>
+    </rule>
+
+
+    <rule id="graylist" exe_class="" method="" parent="totallist">
+        <property name="content" value="客户身份证号码命中内部灰名单"/>
+        <property name="exe_sql" value="select count(1) from customer_black_list inner join user_basicinfo on
+        			user_basicinfo.CERTIFICATE_NUMBER = customer_black_list.certificate_no
+        			where customer_black_list.certificate_type =1 and user_basicinfo.customer_no = ? and customer_black_list.is_gray = 1"/>
+        <property name="param" value="CUSTOMER_NO" type="java.lang.String" desc="客户编号"/>
+        <property name="comparison_code" value="02"/>
+        <property name="comparison_value" value="&gt;"/>
+        <property name="baseline" value="0"/>
+        <property name="baseline_desc" value="客户的身份证号码在黑名单表个数中大于0"/>
+    </rule>
+
+    <rule id="overduetime" exe_class="" method="" parent="">
+        <property name="content" value="上一笔贷款是否逾期"/>
+        <property name="exe_sql" value="select  nvl ( (select trunc(UPDATE_time) from customer_data where rownum=1 and customer_no= ? )-(select trunc(contract_end_date)
+                 from contract_basicinfo  where rownum=1 and contract_custno= ? ) , 0) as days from dual"/>
+        <property name="param" value="CUSTOMER_NO,CUSTOMER_NO" type="java.lang.String,java.lang.String" desc="客户编号"/>
+        <property name="comparison" code="02" value="&gt;"/>
+        <property name="baseline" value="30" desc="合同结束日期大于30天"/>
+        <property name="result" value="RESULT.REJECTED" desc="拒绝"/>
+        <property name="continue_flag" value="1"/>
+        <property name="priority" value="00020"/>
+    </rule>
+
+</rules>
+

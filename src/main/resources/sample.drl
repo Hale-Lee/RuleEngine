@@ -1,0 +1,101 @@
+#this is atest
+package tech.kiwa.engine.entity;
+globals java.util.List myGlobalList
+
+import tech.kiwa.engine.sample.Student;
+
+function void callOver(Student $student){
+
+  if($student != null){
+  	System.out.println("student [" +  $student.name + "] is called.");
+  }
+
+}
+function void ageUp(Student $student, int age ){
+
+  if($student != null){
+  	$student.setAge( $student.getAge() + age);
+  }
+
+}
+
+declare teacher
+   age : int
+   name : String
+   sex : int
+end
+
+query "juniorBoy"
+	$student: Student( age <=14 && (age >10 || age !=12 , sex  ==1 || sex == 2 ), name =="tony")
+end
+
+query "querymale"(int $gender)
+	$student: Student(sex == $gender)
+end
+
+rule "ageUp12"
+salience 400
+when
+ 	$student: Student(age < 8)
+ 	 /* antoher rule */
+then
+	System.out.println("I was called, my name is : " + $student.name);
+	ageUp($student,12);
+	//callOver($student);
+end
+
+rule "isTom"
+salience 30
+date-expires "2018-12-01"
+dialet "java"
+when
+	$student: Student(name == tom)
+then
+ 	$student.sex = 4;
+    callOver($student);
+end
+
+rule "class"
+salience 10
+duration 30000
+enable true
+when
+	$student:Student()
+then
+	$student.toString();
+    callOver($student);
+end
+
+rule "testList"
+salience 20
+active-group "groupB"
+when
+	$student : Student( age  > 22)
+    //not Student(age < $age)
+then
+	System.out.println("age1 = " + $student.getAge());
+    callOver($student);		//这里导致了LHS的变化 然后会重新触发规则的匹配慎用 这里只是为了展示排序的例子，然后这个rule可以排序。。。。
+end
+
+rule "testSimp"
+salience 80
+active-group "groupB"
+when
+	$student : Student( age  > 12)
+    //not Student(age < $age)
+then
+	System.out.println("age2 = " + $student.getAge());
+    callOver($student);		//这里导致了LHS的变化 然后会重新触发规则的匹配慎用 这里只是为了展示排序的例子，然后这个rule可以排序。。。。
+end
+
+rule "agendaAge"
+salience 100
+agenda-group "groupA"
+auto-focus true
+when
+	eval(true)
+	$student : Student( age  > 2)
+then
+	System.out.println("age3 = " + $student.getAge());
+    callOver($student);		//这里导致了LHS的变化 然后会重新触发规则的匹配慎用 这里只是为了展示排序的例子，然后这个rule可以排序。。。。
+end
