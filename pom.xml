@@ -5,6 +5,29 @@
 	<artifactId>RuleEngine</artifactId>
 	<version>0.1.0</version>
 	<name>Hale</name>
+
+	<licenses>
+	    <license>
+	        <name>The Apache Software License, Version 2.0</name>
+	        <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+	        <distribution>repo</distribution>
+	    </license>
+	</licenses>
+
+	<scm>
+	    <url>https://github.com/Hale-Lee/RuleEngine</url>
+	    <connection>https://github.com/Hale-Lee/RuleEngine.git</connection>
+	    <developerConnection>https://www.kiwa.tech</developerConnection>
+	</scm>
+
+	<developers>
+	    <developer>
+	        <name>hale</name>
+	        <email>hale2000@163.com</email>
+	        <url>http://www.kiwa.tech</url>
+	    </developer>
+	</developers>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<logback.version>1.2.3</logback.version>
@@ -81,9 +104,10 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -103,4 +127,7 @@
 	<organization>
 		<url>www.kiwa.tech</url>
 	</organization>
+
+
+
 </project>

@@ -253,7 +253,7 @@ public class EngineService {
 
 			System.out.println(st.getAge());
 		} catch (RuleEngineException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
