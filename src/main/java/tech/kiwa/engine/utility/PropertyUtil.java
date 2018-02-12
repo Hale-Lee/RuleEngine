@@ -59,11 +59,7 @@ public class PropertyUtil {
 		return value;
 	}
 
-	/**
-	 *
-	 * @param fileName
-	 * @return
-	 */
+
 	public static Properties loadPropertFile(String fileName){
 		Properties prop = null;
 

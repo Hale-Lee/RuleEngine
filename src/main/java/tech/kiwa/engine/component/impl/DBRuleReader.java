@@ -99,7 +99,7 @@ public class DBRuleReader extends AbstractRuleReader {
                 rule.setEnableFlag(res.getString("ENABLE_FLAG"));
                 rule.setCreateTime(res.getDate("CREATE_TIME"));
                 rule.setUpdateTime(res.getDate("UPDATE_TIME"));
-        		if(!compile(rule)){
+        		if(!preCompile(rule)){
         			log.debug("database rule format error.");
         			throw new RuleEngineException("rule format error.");
         			//return null;
@@ -208,7 +208,7 @@ public class DBRuleReader extends AbstractRuleReader {
                 rule.setEnableFlag(res.getString("ENABLE_FLAG"));
                 rule.setCreateTime(res.getDate("CREATE_TIME"));
                 rule.setUpdateTime(res.getDate("UPDATE_TIME"));
-        		if(!compile(rule)){
+        		if(!preCompile(rule)){
         			log.debug("database rule format error.");
         			throw new RuleEngineException("rule format error.");
         			//return null;

@@ -42,9 +42,9 @@ public abstract class AbstractRuleReader {
 
 	/**
 	 * Sort the same level rule item, and filter the items not in the same level.
-	 * @param itemList
-	 * @param parentItem
-	 * @return
+	 * @param itemList  排序的对象列表
+	 * @param parentItem  父级规则
+	 * @return  排好序的规则列表
 	 */
 	public List<RuleItem> sortItem(List<RuleItem> itemList, String parentItem){
 
@@ -80,9 +80,9 @@ public abstract class AbstractRuleReader {
 	}
 
 	/**
-	 *
-	 * @param itemList
-	 * @return
+	 * 在规则列表中查找最小的优先级
+	 * @param itemList  查找的对象列表
+	 * @return 最小的优先级
 	 */
 	@SuppressWarnings("unused")
 	private int queryMiniumPriority( List<RuleItem> itemList){
@@ -109,9 +109,9 @@ public abstract class AbstractRuleReader {
 	}
 
 	/**
-	 *
-	 * @param itemList
-	 * @return
+	 * 在规则列表中查找最大的优先级
+	 * @param itemList  查找的对象列表
+	 * @return  最大的优先级	
 	 */
 	private int queryMaxiumPriority( List<RuleItem> itemList){
 
@@ -137,10 +137,10 @@ public abstract class AbstractRuleReader {
 	}
 
 	/**
-	 *
-	 * @param itemList
-	 * @param parentItemNo
-	 * @return
+	 * 查找同层级的规则列表
+	 * @param itemList     要查找的对象
+	 * @param parentItemNo  父级规则
+	 * @return 同层级的规则列表
 	 */
 	public List<RuleItem> filterItem(List<RuleItem> itemList, String parentItemNo){
 
@@ -165,11 +165,11 @@ public abstract class AbstractRuleReader {
 	}
 
 	/**
-	 * check rule format is correct or not.
-	 * @param item
-	 * @return
+	 * 检查规则的格式是否正确
+	 * @param item          规则定义体
+	 * @return true -- 合法 false　-- 不合法
 	 */
-	public boolean compile(RuleItem item){
+	public boolean preCompile(RuleItem item){
 
 		boolean bRet = true;
 		if(StringUtils.isEmpty(item.getItemNo())){
