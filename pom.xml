@@ -77,13 +77,13 @@
             <version>2.5</version>
         </dependency>
 
-		<!-- https://mvnrepository.com/artifact/cglib/cglib-nodep -->
+		<!-- https://mvnrepository.com/artifact/cglib/cglib-nodep
 		<dependency>
 		    <groupId>cglib</groupId>
 		    <artifactId>cglib-nodep</artifactId>
 		    <version>3.2.6</version>
 		</dependency>
-
+ 		-->
 		<!-- 数据库连接的包 -->
         <dependency>
             <groupId>ojdbc</groupId>
@@ -132,9 +132,9 @@
 			            </configuration>
 			        </execution>
 			    </executions>
-			</plugin>			
+			</plugin>
 			<plugin>
-			
+
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.4</version>
@@ -157,13 +157,13 @@
                             <goals>
                                 <goal>sign</goal>
                             </goals>
-                            <!-- <configuration> <executable>gpg</executable> <homedir>${gpg.homedir}</homedir> 
-                                <keyname>${gpg.keyname}</keyname> <passphrase>${gpg.passphrase}</passphrase> 
+                            <!-- <configuration> <executable>gpg</executable> <homedir>${gpg.homedir}</homedir>
+                                <keyname>${gpg.keyname}</keyname> <passphrase>${gpg.passphrase}</passphrase>
                                 </configuration> -->
                         </execution>
                     </executions>
-            </plugin>		
-		
+            </plugin>
+
 		</plugins>
 		</pluginManagement>
 	</build>
