@@ -51,12 +51,10 @@ public class DirectDBAccesser implements DBAccesser{
 
 
     /**
-     * 根据类型获取数据源.
+     * 根据类型获取数据源.  非线程安全的函数
      *
-     * @param
      * @return druid或者dbcp数据源
      * @throws Exception the exception
-     * @NotThreadSafe
      */
     public static final DataSource getDataSource() throws Exception {
 

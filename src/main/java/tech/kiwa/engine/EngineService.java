@@ -148,9 +148,6 @@ public class EngineService {
 				Class<AbstractRuleItem>  auditClass = null;
 				AbstractRuleItem auditInstance = null;
 
-
-
-
 				if(StringUtils.isNotEmpty(className)){
 					try {
 						//auditInstance = CglibCaller.newInstance(AbstractRuleItem.class);
@@ -210,13 +207,7 @@ public class EngineService {
 	protected void afterExecuted(EngineRunResult result){
 
 	}
-	/**
-	 *
-	 * @param objectId
-	 * @param item
-	 * @param result
-	 * @throws RuleEngineException
-	 */
+
 	protected String writeExecutedLog(Object object, RuleItem item , ItemExecutedResult result ) throws RuleEngineException{
 
 

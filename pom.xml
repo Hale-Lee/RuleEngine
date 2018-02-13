@@ -5,6 +5,11 @@
 	<artifactId>RuleEngine</artifactId>
 	<version>0.1.0</version>
 	<name>Hale</name>
+	<parent>
+	        <groupId>org.sonatype.oss</groupId>
+	        <artifactId>oss-parent</artifactId>
+	        <version>8</version>
+	</parent>
 
 	<licenses>
 	    <license>
@@ -101,16 +106,35 @@
 			</resource>
 		</resources>
 		<finalName>RuleEngine</finalName>
+		<pluginManagement>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
+				<version>3.6.0</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-dependency-plugin</artifactId>
+			    <version>2.10</version>
+			    <executions>
+			        <execution>
+			            <id>copy-dependencies</id>
+			            <phase>package</phase>
+			            <goals>
+			                <goal>copy-dependencies</goal>
+			            </goals>
+			            <configuration>
+			                <outputDirectory>/target</outputDirectory>
+			            </configuration>
+			        </execution>
+			    </executions>
+			</plugin>			
+			<plugin>
+			
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.4</version>
@@ -122,7 +146,26 @@
 					</archive>
 				</configuration>
 			</plugin>
+			<plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>1.6</version>
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                            <!-- <configuration> <executable>gpg</executable> <homedir>${gpg.homedir}</homedir> 
+                                <keyname>${gpg.keyname}</keyname> <passphrase>${gpg.passphrase}</passphrase> 
+                                </configuration> -->
+                        </execution>
+                    </executions>
+            </plugin>		
+		
 		</plugins>
+		</pluginManagement>
 	</build>
 	<organization>
 		<url>www.kiwa.tech</url>

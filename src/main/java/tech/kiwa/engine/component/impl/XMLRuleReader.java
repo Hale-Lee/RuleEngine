@@ -125,7 +125,7 @@ public class XMLRuleReader extends AbstractRuleReader {
 					}
 				}	// endif hasChildNodes.
 
-				if(!compile(item)){
+				if(!preCompile(item)){
 					log.debug("xml rule format error.");
 					throw new RuleEngineException("rule format error.");
 					//return null;
@@ -236,7 +236,7 @@ public class XMLRuleReader extends AbstractRuleReader {
 					}
 				}
 
-				if(!compile(item)){
+				if(!preCompile(item)){
 					log.debug("xml rule format error.");
 					throw new RuleEngineException("rule format error.");
 					//return null;

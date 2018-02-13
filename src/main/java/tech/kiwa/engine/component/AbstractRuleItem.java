@@ -39,7 +39,7 @@ public abstract class  AbstractRuleItem {
     }
 
 
-    public Object getService( String seriveName){
+    protected Object getService( String seriveName){
 
     	Object objRet = null;
 
@@ -49,10 +49,10 @@ public abstract class  AbstractRuleItem {
 
     /**
      *
-     * @param requiredType
-     * @return
+     * @param requiredType  参数类型
+     * @return	该类必须被继承
      */
-	public <T> T getService(Class<T> requiredType){
+	protected <T> T getService(Class<T> requiredType){
 
     	T objRet = null;
 
@@ -66,11 +66,11 @@ public abstract class  AbstractRuleItem {
 
     /**
      * analyze the data of when condition.
-     * @param resultSet
-     * @param item
-     * @return
-     * @throws EmptyResultSetException
-     * @throws RuleEngineException
+     * @param resultSet      返回的结果集，从数据库读出来的
+     * @param item           规则定义体
+     * @return               运行是成功还是失败
+     * @throws EmptyResultSetException   结果集是空时的的返回．
+     * @throws RuleEngineException       其他的异常
      */
 	protected boolean analyze(Map<String , Object> resultSet , RuleItem item) throws EmptyResultSetException, RuleEngineException{
 
@@ -133,14 +133,7 @@ public abstract class  AbstractRuleItem {
 
 
 
-    /**
-     *
-     * @param compare operation
-     * @param baseline
-     * @param subject
-     * @return
-     * @throws Exception
-     */
+
     public static boolean comparisonOperate(String subject, String comparisonCode , String baseline ) throws RuleEngineException{
 
     	boolean bRet = false;
@@ -241,14 +234,7 @@ public abstract class  AbstractRuleItem {
     	return bRet;
     }
 
-    /**
-     * extended the comparison operating, can run the comparison code over 20.
-     * @param subject
-     * @param comparisonCode
-     * @param baseline
-     * @return
-     * @throws Exception
-     */
+
     private static boolean extendComparisonOperate(String subject, String comparisonCode , String baseline ) throws RuleEngineException{
 
     	OperatorFactory optMgr = OperatorFactory.getInstance();
