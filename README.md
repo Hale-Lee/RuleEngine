@@ -46,4 +46,7 @@ rule.reader=xml/drools/database
 			e.printStackTrace();
 		}
     
-    https://github.com/Hale-Lee/RuleEngine/wiki
+
+
+https://github.com/Hale-Lee/RuleEngine/wiki
+
