@@ -18,11 +18,14 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.beans.BeansException;
+
 import tech.kiwa.engine.entity.ItemExecutedResult;
 import tech.kiwa.engine.entity.RuleItem;
 import tech.kiwa.engine.exception.EmptyResultSetException;
 import tech.kiwa.engine.exception.RuleEngineException;
 import tech.kiwa.engine.framework.OperatorFactory;
+import tech.kiwa.engine.utility.SpringContextHelper;
 
 
 /**
@@ -39,24 +42,37 @@ public abstract class  AbstractRuleItem {
     }
 
 
+    /**
+     * 获取SpringMVC中的Service对象，如果未使用SpringMVC，则返回null.
+     * @param seriveName  Service名称，
+     * @return  返回的Serivce对象。
+     */
     protected Object getService( String seriveName){
 
     	Object objRet = null;
 
-    	//objRet = SpringContextUtils.getBean(seriveName);
+    	try {
+			objRet = SpringContextHelper.getBean(seriveName);
+		} catch (BeansException e) {
+
+		}
+
     	return objRet;
     }
 
-    /**
+    /** 获取SpringMVC中的Service对象。 如果未使用SpringMVC，则返回null.
      *
-     * @param requiredType  参数类型
-     * @return	该类必须被继承
+     * @param requiredType  Serivce的类型，即具体的类。
+     * @return	 返回的Serivce对象。
      */
 	protected <T> T getService(Class<T> requiredType){
 
     	T objRet = null;
+    	try {
+			objRet =  SpringContextHelper.getBean( requiredType);
+		} catch (BeansException e) {
 
-    	//objRet =  SpringContextUtils.getBean( requiredType);
+		}
     	return objRet;
 
     }
@@ -68,7 +84,7 @@ public abstract class  AbstractRuleItem {
      * analyze the data of when condition.
      * @param resultSet      返回的结果集，从数据库读出来的
      * @param item           规则定义体
-     * @return               运行是成功还是失败
+     * @return               运行是成功还是失败  true or false.
      * @throws EmptyResultSetException   结果集是空时的的返回．
      * @throws RuleEngineException       其他的异常
      */
@@ -132,8 +148,14 @@ public abstract class  AbstractRuleItem {
     }
 
 
-
-
+	/**
+	 * 比较运算操作，将执行的结果和RuleItem中的baseline作比较。
+	 * @param subject            比较对象（运行结果）
+	 * @param comparisonCode     比较操作符号，在OperationFactory中定义。
+	 * @param baseline           比较基线，用于比较的对象。
+	 * @return                   根据ComparisonCode运行的结果。 true or flase。
+	 * @throws RuleEngineException  参数不合法，或者比较操作符不合法。
+	 */
     public static boolean comparisonOperate(String subject, String comparisonCode , String baseline ) throws RuleEngineException{
 
     	boolean bRet = false;
