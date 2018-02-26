@@ -3,10 +3,10 @@
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for META_CUSTOMER_AUDIT_ITEM
+-- Table structure for TL_RULE_DEFINE
 -- ----------------------------
-DROP TABLE IF EXISTS `META_CUSTOMER_AUDIT_ITEM`;
-CREATE TABLE `META_CUSTOMER_AUDIT_ITEM` (
+DROP TABLE IF EXISTS `TL_RULE_DEFINE`;
+CREATE TABLE `TL_RULE_DEFINE` (
   `item_no` varchar(32) NOT NULL,
   `content` varchar(128) DEFAULT NULL COMMENT '中文的内容说明',
   `exe_sql` varchar(512) DEFAULT NULL  COMMENT '执行检查的SQL语句',
