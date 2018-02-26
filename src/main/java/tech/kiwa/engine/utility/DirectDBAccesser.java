@@ -40,12 +40,20 @@ public class DirectDBAccesser implements DBAccesser{
 
 	private static Logger log = LoggerFactory.getLogger(DirectDBAccesser.class);
 
-	private static final boolean UseDruid = true;
+	private static boolean UseDruid = true;
 
 	private static ArrayList<Connection> connList = new ArrayList<Connection> ();			//只用了一个连接， 没有用到连接池。
 
 
-    /** The druid source. */
+    public static boolean isUseDruid() {
+		return UseDruid;
+	}
+
+	public static void setUseDruid(boolean useDruid) {
+		UseDruid = useDruid;
+	}
+
+	/** The druid source. */
     private static  DataSource dataSource = null;
 
 
