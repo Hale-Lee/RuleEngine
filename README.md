@@ -51,6 +51,7 @@ rule.reader=xml/drools/database
        
         -4.1 若2.1选择了xml格式的规则，则需要配置xml.rule.filename项目，这个地方填写规则的文件名，需要指定为xml文件格式。
 典型的规则项目为：
+
     <rule id="totallist" exe_class="" method="" parent="">
         <property name="content" value="客户身份证号码规则"/>
         <property name="result" value="RESULT.REJECTED" desc="拒绝"/>
@@ -74,6 +75,7 @@ rule.reader=xml/drools/database
 
                -4.3 若2.3选择database格式的规则，则需要配置db.rule.table项目，这个地方填写规则的数据库表结构，其表生成的结构可以参考SQL目录下的2个文件。典型 的规则描述如下：
 	       
+	       11	黑名单	select count(1) as cnt from tl_blacklist where customer_no = ? and delete_flag = 1		customer_no	java.lang.String	01	==	0	PASSED		100	1					1	2018-02-26 12:40:15.000000	2018-02-26 12:40:18.000000
 
 
 https://github.com/Hale-Lee/RuleEngine/wiki
