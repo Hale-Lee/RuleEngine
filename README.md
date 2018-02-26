@@ -22,12 +22,12 @@ rule.reader=xml/drools/database
        <br>
    -2.3 若选择使用drools格式的规则文件，则设置rule.reader=drools，同时需要设置drools.rule.filename=sample.drl
        <br>
- 
+
  #3，引用调用
- 
+
    直接import EngineService类，生成EngineService对象，同时将需要校验的bean作为Object传入给EngineService对象的Start方法。
    如下所示：
-   
+
 		EngineService service = new EngineService();
 
 		try {
@@ -45,10 +45,10 @@ rule.reader=xml/drools/database
 
 			e.printStackTrace();
 		}
-    
-    
+
+
      #4，编写规则
-       
+      
         -4.1 若2.1选择了xml格式的规则，则需要配置xml.rule.filename项目，这个地方填写规则的文件名，需要指定为xml文件格式。
 典型的规则项目为：
 
@@ -59,30 +59,30 @@ rule.reader=xml/drools/database
         <property name="group_express" value="(blacklist || graylist)"/>
 		<property name="priority" value="00010"/>
     </rule>
-	
+
         -4.2 若2.2选择了drools格式的规则，则需要配置drools.rule.filename项目，这个地方填写规则的文件名，需要指定为drl文件格式。
 典型的规则项目为：
 
       <br>
-      
-      rule "ageUp12"
-	salience 400
-	when
+
+    rule "ageUp12"
+	 salience 400
+	 when
 		$student: Student(age < 8)
 		 /* antoher rule */
-	then
+	 then
 		System.out.println("I was called, my name is : " + $student.name);
 		ageUp($student,12);
 		//callOver($student);
-	end
- 	
+	 end
+ 
 	<br>
                -4.3 若2.3选择database格式的规则，则需要配置db.rule.table项目，这个地方填写规则的数据库表结构，其表生成的结构可以参考SQL目录下的2个文件。典型 的规则描述如下：
 	        <br>
 	       11	黑名单	select count(1) as cnt from tl_blacklist where customer_no = ? and delete_flag = 1		customer_no	java.lang.String	01	==	0	PASSED		100	1					1	2018-02-26 12:40:15.000000	2018-02-26 12:40:18.000000
 
 		 <br>
-		 
-		 
+
+
 https://github.com/Hale-Lee/RuleEngine/wiki
 
