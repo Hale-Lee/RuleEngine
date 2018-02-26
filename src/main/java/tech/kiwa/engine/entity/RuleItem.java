@@ -54,6 +54,7 @@ public class RuleItem implements Serializable {
 		switch(name.toLowerCase()){
 		case "itemno":
 		case "ruleid":
+		case "id":
 				this.itemNo = value;
 			break;
 		case "auditdesc":
@@ -115,6 +116,7 @@ public class RuleItem implements Serializable {
 			this.continueFlag = value;
 			break;
 		case "parent_item_no":
+		case "parent":
 			this.parentItemNo = value;
 			break;
 		case "group_express":
