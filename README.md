@@ -46,6 +46,34 @@ rule.reader=xml/drools/database
 			e.printStackTrace();
 		}
     
+    
+     #4，编写规则
+       
+        -4.1 若2.1选择了xml格式的规则，则需要配置xml.rule.filename项目，这个地方填写规则的文件名，需要指定为xml文件格式。
+典型的规则项目为：
+    <rule id="totallist" exe_class="" method="" parent="">
+        <property name="content" value="客户身份证号码规则"/>
+        <property name="result" value="RESULT.REJECTED" desc="拒绝"/>
+        <property name="continue_flag" value="1"/>
+        <property name="group_express" value="(blacklist || graylist)"/>
+		<property name="priority" value="00010"/>
+    </rule>
+	
+        -4.2 若2.2选择了drools格式的规则，则需要配置drools.rule.filename项目，这个地方填写规则的文件名，需要指定为drl文件格式。
+典型的规则项目为：
+	rule "ageUp12"
+	salience 400
+	when
+		$student: Student(age < 8)
+		 /* antoher rule */
+	then
+		System.out.println("I was called, my name is : " + $student.name);
+		ageUp($student,12);
+		//callOver($student);
+	end
+
+               -4.3 若2.3选择database格式的规则，则需要配置db.rule.table项目，这个地方填写规则的数据库表结构，其表生成的结构可以参考SQL目录下的2个文件。典型 的规则描述如下：
+	       
 
 
 https://github.com/Hale-Lee/RuleEngine/wiki
