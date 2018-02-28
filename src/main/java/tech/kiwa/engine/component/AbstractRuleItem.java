@@ -27,240 +27,252 @@ import tech.kiwa.engine.exception.RuleEngineException;
 import tech.kiwa.engine.framework.OperatorFactory;
 import tech.kiwa.engine.utility.SpringContextHelper;
 
-
 /**
  * @author Hale.Li
- * @since  2018-01-28
+ * @since 2018-01-28
  * @version 0.1
  */
-public abstract class  AbstractRuleItem {
+public abstract class AbstractRuleItem {
 
 	protected Object object;
 
-    public void setObject(Object object){
-    	this.object = object;
-    }
+	public void setObject(Object object) {
+		this.object = object;
+	}
 
+	/**
+	 * 获取SpringMVC中的Service对象，如果未使用SpringMVC，则返回null.
+	 *
+	 * @param seriveName
+	 *            Service名称，
+	 * @return 返回的Serivce对象。
+	 */
+	protected Object getService(String seriveName) {
 
-    /**
-     * 获取SpringMVC中的Service对象，如果未使用SpringMVC，则返回null.
-     * @param seriveName  Service名称，
-     * @return  返回的Serivce对象。
-     */
-    protected Object getService( String seriveName){
+		Object objRet = null;
 
-    	Object objRet = null;
-
-    	try {
+		try {
 			objRet = SpringContextHelper.getBean(seriveName);
 		} catch (BeansException e) {
 
 		}
 
-    	return objRet;
-    }
+		return objRet;
+	}
 
-    /** 获取SpringMVC中的Service对象。 如果未使用SpringMVC，则返回null.
-     *
-     * @param requiredType  Serivce的类型，即具体的类。
-     * @return	 返回的Serivce对象。
-     */
-	protected <T> T getService(Class<T> requiredType){
+	/**
+	 * 获取SpringMVC中的Service对象。 如果未使用SpringMVC，则返回null.
+	 *
+	 * @param <T> 参数类型的模板类
+	 * @param requiredType
+	 *        Serivce的类型，即具体的类。
+	 * @return 返回的Serivce对象。
+	 */
+	protected <T> T getService(Class<T> requiredType) {
 
-    	T objRet = null;
-    	try {
-			objRet =  SpringContextHelper.getBean( requiredType);
+		T objRet = null;
+		try {
+			objRet = SpringContextHelper.getBean(requiredType);
 		} catch (BeansException e) {
 
 		}
-    	return objRet;
+		return objRet;
 
-    }
+	}
 
+	public abstract ItemExecutedResult doCheck(RuleItem item) throws RuleEngineException;
 
-    public abstract ItemExecutedResult doCheck(RuleItem item) throws RuleEngineException;
+	/**
+	 * analyze the data of when condition.
+	 *
+	 * @param resultSet
+	 *            返回的结果集，从数据库读出来的
+	 * @param item
+	 *            规则定义体
+	 * @return 运行是成功还是失败 true or false.
+	 * @throws EmptyResultSetException
+	 *             结果集是空时的的返回．
+	 * @throws RuleEngineException
+	 *             其他的异常
+	 */
+	protected boolean analyze(Map<String, Object> resultSet, RuleItem item)
+			throws EmptyResultSetException, RuleEngineException {
 
-    /**
-     * analyze the data of when condition.
-     * @param resultSet      返回的结果集，从数据库读出来的
-     * @param item           规则定义体
-     * @return               运行是成功还是失败  true or false.
-     * @throws EmptyResultSetException   结果集是空时的的返回．
-     * @throws RuleEngineException       其他的异常
-     */
-	protected boolean analyze(Map<String , Object> resultSet , RuleItem item) throws EmptyResultSetException, RuleEngineException{
+		String retValue = null;
 
-    	String retValue = null;
+		//
+		if (resultSet.containsKey("cnt")) {
 
-    	//
-    	if(resultSet.containsKey("cnt")){
+			retValue = resultSet.get("cnt").toString();
 
-    		retValue = resultSet.get("cnt").toString();
+		} else if (resultSet.size() == 1) {
 
-    	}else if(resultSet.size() == 1){
+			Set<String> keySet = (Set<String>) resultSet.keySet();
+			for (String key : keySet) {
 
-    		Set<String> keySet = (Set<String>) resultSet.keySet();
-    		for(String key : keySet){
+				if (null == resultSet.get(key)) {
+					retValue = null;
+				} else if (resultSet.get(key) instanceof String) {
+					retValue = (String) resultSet.get(key);
+				} else {
+					retValue = resultSet.get(key).toString();
+				}
 
-    			if(null == resultSet.get(key)){
-    				retValue = null;
-    			}else if(resultSet.get(key) instanceof String){
-    				retValue = (String) resultSet.get(key);
-    			}else {
-    				retValue = resultSet.get(key).toString();
-    			}
+			}
 
-    		}
+		} else if (resultSet.size() > 1) {
+			// read the first data.
+			Set<String> keySet = (Set<String>) resultSet.keySet();
+			for (String key : keySet) {
 
-    	} else  if(resultSet.size() > 1){
-    		//read the first data.
-    		Set<String> keySet = (Set<String>) resultSet.keySet();
-    		for(String key : keySet){
+				if (null == resultSet.get(key)) {
+					retValue = null;
+				} else if (resultSet.get(key) instanceof String) {
+					retValue = (String) resultSet.get(key);
+				} else {
+					retValue = resultSet.get(key).toString();
+				}
+				break;
+			}
 
-    			if(null == resultSet.get(key)){
-    				retValue = null;
-    			}else if(resultSet.get(key) instanceof String){
-    				retValue = (String) resultSet.get(key);
-    			}else {
-    				retValue = resultSet.get(key).toString();
-    			}
-    			break;
-    		}
+			// 如果数据返回为空，那么默认为审核通过
+		} else if (resultSet.isEmpty()) {
 
-    	//如果数据返回为空，那么默认为审核通过
-    	} else if(resultSet.isEmpty()){
+			throw new EmptyResultSetException("resultset is empty.");
+			// return true;
+		} else {
+			throw new RuleEngineException("unknow resultset.");
+		}
 
-    		throw new EmptyResultSetException("resultset is empty.");
-    		//return true;
-    	}else{
-    		throw new RuleEngineException("unknow resultset.");
-    	}
+		boolean bRet = false;
 
-    	boolean bRet = false;
+		// try {
+		bRet = comparisonOperate(retValue, item.getComparisonCode(), item.getBaseline());
+		// } catch (RuleEngineException e) {
+		// throw e;
+		// }
 
-    	//try {
-			bRet = comparisonOperate(retValue, item.getComparisonCode(), item.getBaseline());
-		//} catch (RuleEngineException e) {
-		//	throw e;
-		//}
-
-    	return bRet;
-    }
-
+		return bRet;
+	}
 
 	/**
 	 * 比较运算操作，将执行的结果和RuleItem中的baseline作比较。
-	 * @param subject            比较对象（运行结果）
-	 * @param comparisonCode     比较操作符号，在OperationFactory中定义。
-	 * @param baseline           比较基线，用于比较的对象。
-	 * @return                   根据ComparisonCode运行的结果。 true or flase。
-	 * @throws RuleEngineException  参数不合法，或者比较操作符不合法。
+	 *
+	 * @param subject
+	 *            比较对象（运行结果）
+	 * @param comparisonCode
+	 *            比较操作符号，在OperationFactory中定义。
+	 * @param baseline
+	 *            比较基线，用于比较的对象。
+	 * @return 根据ComparisonCode运行的结果。 true or flase。
+	 * @throws RuleEngineException
+	 *             参数不合法，或者比较操作符不合法。
 	 */
-    public static boolean comparisonOperate(String subject, String comparisonCode , String baseline ) throws RuleEngineException{
+	public static boolean comparisonOperate(String subject, String comparisonCode, String baseline)
+			throws RuleEngineException {
 
-    	boolean bRet = false;
+		boolean bRet = false;
 
-    	if(null == subject || null == baseline || null == comparisonCode){
-    		throw new RuleEngineException("null pointer error of subject or baseline or comparison code.");
-    	}
+		if (null == subject || null == baseline || null == comparisonCode) {
+			throw new RuleEngineException("null pointer error of subject or baseline or comparison code.");
+		}
 
+		BigDecimal bdSubject = null;
+		BigDecimal object = null;
 
-    	BigDecimal bdSubject = null;
-    	BigDecimal object = null;
+		switch (comparisonCode) {
 
-    	switch (comparisonCode){
+		case OperatorFactory.OPR_CODE.EQUAL:
+			try {
+				bdSubject = new BigDecimal(subject);
+				object = new BigDecimal(baseline);
+				bRet = (bdSubject.compareTo(object) == 0);
+			} catch (Exception e) {
+				bRet = subject.equals(baseline);
+			}
+			break;
+		case OperatorFactory.OPR_CODE.GREATER:
+			try {
+				bdSubject = new BigDecimal(subject);
+				object = new BigDecimal(baseline);
+				bRet = (bdSubject.compareTo(object) > 0);
+			} catch (Exception e1) {
+				bRet = (subject.compareTo(baseline) > 0);
+			}
+			break;
+		case OperatorFactory.OPR_CODE.LESS:
+			try {
+				bdSubject = new BigDecimal(subject);
+				object = new BigDecimal(baseline);
+				bRet = (bdSubject.compareTo(object) < 0);
+			} catch (Exception e1) {
+				bRet = (subject.compareTo(baseline) < 0);
+			}
+			break;
+		case OperatorFactory.OPR_CODE.NOT_EQUAL:
+			try {
+				bdSubject = new BigDecimal(subject);
+				object = new BigDecimal(baseline);
+				bRet = (bdSubject.compareTo(object) != 0);
+			} catch (Exception e) {
+				bRet = !subject.equals(baseline);
+			}
+			break;
+		case OperatorFactory.OPR_CODE.GREATER_EQUAL:
+			try {
+				bdSubject = new BigDecimal(subject);
+				object = new BigDecimal(baseline);
+				bRet = (bdSubject.compareTo(object) >= 0);
+			} catch (Exception e) {
+				bRet = (subject.compareTo(baseline) >= 0);
+			}
+			break;
+		case OperatorFactory.OPR_CODE.LESS_EQUAL:
+			try {
+				bdSubject = new BigDecimal(subject);
+				object = new BigDecimal(baseline);
+				bRet = (bdSubject.compareTo(object) <= 0);
+			} catch (Exception e) {
+				bRet = (subject.compareTo(baseline) <= 0);
+			}
+			break;
+		case OperatorFactory.OPR_CODE.INCLUDE:
+			bRet = subject.contains(baseline);
+			break;
+		case OperatorFactory.OPR_CODE.NOT_INCLUDE:
+			bRet = !subject.contains(baseline);
+			break;
+		case OperatorFactory.OPR_CODE.INCLUDED_BY:
+			bRet = baseline.contains(subject);
+			break;
+		case OperatorFactory.OPR_CODE.NOT_INCLUDED_BY:
+			bRet = !baseline.contains(subject);
+			break;
+		case OperatorFactory.OPR_CODE.EQUAL_IGNORE_CASE:
+			bRet = subject.equalsIgnoreCase(baseline);
+			break;
+		case OperatorFactory.OPR_CODE.NOT_EQUAL_IGNORE_CASE:
+			bRet = !subject.equalsIgnoreCase(baseline);
+			break;
+		case OperatorFactory.OPR_CODE.MATCH:
+			bRet = subject.matches(baseline);
+			break;
+		case OperatorFactory.OPR_CODE.UNMATCH:
+			bRet = !subject.matches(baseline);
+			break;
+		default:
+			bRet = extendComparisonOperate(subject, comparisonCode, baseline);
+			break;
+		}
 
-	    	case OperatorFactory.OPR_CODE.EQUAL:
-				try {
-					bdSubject = new BigDecimal(subject);
-		    		object= new BigDecimal(baseline);
-		    		bRet = (bdSubject.compareTo(object) == 0 );
-				} catch (Exception e) {
-					bRet = subject.equals(baseline);
-				}
-	    		break;
-	    	case OperatorFactory.OPR_CODE.GREATER:
-				try {
-					bdSubject = new BigDecimal(subject);
-		    		object= new BigDecimal(baseline);
-		    		bRet = (bdSubject.compareTo(object) > 0 );
-				} catch (Exception e1) {
-					bRet = (subject.compareTo(baseline) > 0 );
-				}
-	    		break;
-	    	case OperatorFactory.OPR_CODE.LESS:
-				try {
-					bdSubject = new BigDecimal(subject);
-		    		object= new BigDecimal(baseline);
-		    		bRet = (bdSubject.compareTo(object) < 0 );
-				} catch (Exception e1) {
-					bRet = (subject.compareTo(baseline) < 0 );
-				}
-	    		break;
-	    	case OperatorFactory.OPR_CODE.NOT_EQUAL:
-				try {
-					bdSubject = new BigDecimal(subject);
-		    		object= new BigDecimal(baseline);
-		    		bRet = (bdSubject.compareTo(object) != 0 );
-				} catch (Exception e) {
-					bRet = !subject.equals(baseline);
-				}
-	    		break;
-	    	case OperatorFactory.OPR_CODE.GREATER_EQUAL:
-				try {
-					bdSubject = new BigDecimal(subject);
-		    		object= new BigDecimal(baseline);
-		    		bRet = (bdSubject.compareTo(object) >= 0 );
-				} catch (Exception e) {
-					bRet = (subject.compareTo(baseline) >= 0 );
-				}
-	    		break;
-	    	case OperatorFactory.OPR_CODE.LESS_EQUAL:
-				try {
-					bdSubject = new BigDecimal(subject);
-		    		object= new BigDecimal(baseline);
-		    		bRet = (bdSubject.compareTo(object) <= 0 );
-				} catch (Exception e) {
-					bRet = (subject.compareTo(baseline) <= 0 );
-				}
-	    		break;
-	    	case OperatorFactory.OPR_CODE.INCLUDE:
-	    		bRet = subject.contains(baseline);
-	    		break;
-	    	case OperatorFactory.OPR_CODE.NOT_INCLUDE:
-	    		bRet = !subject.contains(baseline);
-	    		break;
-	    	case OperatorFactory.OPR_CODE.INCLUDED_BY:
-	    		bRet = baseline.contains(subject);
-	    		break;
-	    	case OperatorFactory.OPR_CODE.NOT_INCLUDED_BY:
-	    		bRet = !baseline.contains(subject);
-	    		break;
-	    	case OperatorFactory.OPR_CODE.EQUAL_IGNORE_CASE:
-	    		bRet = subject.equalsIgnoreCase(baseline);
-	    		break;
-	    	case OperatorFactory.OPR_CODE.NOT_EQUAL_IGNORE_CASE:
-	    		bRet = !subject.equalsIgnoreCase(baseline);
-	    		break;
-	    	case OperatorFactory.OPR_CODE.MATCH:
-	    		bRet = subject.matches(baseline);
-	    		break;
-	    	case OperatorFactory.OPR_CODE.UNMATCH:
-	    		bRet = !subject.matches(baseline);
-	    		break;
-	    	default:
-	    		bRet = extendComparisonOperate( subject,  comparisonCode , baseline);
-	    		break;
-    	}
+		return bRet;
+	}
 
-    	return bRet;
-    }
+	private static boolean extendComparisonOperate(String subject, String comparisonCode, String baseline)
+			throws RuleEngineException {
 
+		OperatorFactory optMgr = OperatorFactory.getInstance();
+		return optMgr.runOperator(subject, comparisonCode, baseline);
 
-    private static boolean extendComparisonOperate(String subject, String comparisonCode , String baseline ) throws RuleEngineException{
-
-    	OperatorFactory optMgr = OperatorFactory.getInstance();
-    	return optMgr.runOperator(subject, comparisonCode, baseline);
-
-    }
+	}
 }
