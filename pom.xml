@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.hale-lee</groupId>
 	<artifactId>RuleEngine</artifactId>
-	<version>0.1.0</version>
+	<version>0.2.0</version>
 	<name>Hale</name>
 	<parent>
 	        <groupId>org.sonatype.oss</groupId>
@@ -125,6 +125,12 @@
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
+	            <excludes>
+	                <exclude>druid.properties</exclude>
+	                <exclude>ruleEngine.properties</exclude>
+	                <exclude>ruleconfig.xml</exclude>
+	                <exclude>sample.drl</exclude>
+	            </excludes>
 			</resource>
 		</resources>
 		<finalName>RuleEngine</finalName>

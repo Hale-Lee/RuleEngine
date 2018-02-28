@@ -50,9 +50,9 @@ public class SpringContextHelper implements ApplicationContextAware {
 	/***
 	 * 根据bean的id获取配置文件中相应的bean
 	 *
-	 * @param name
-	 * @return
-	 * @throws BeansException
+	 * @param name  要取得的bean的名称
+	 * @return   返回service对象，或者是bean对象
+	 * @throws BeansException   bean找不到等异常。
 	 */
 	public static Object getBean(String name) throws BeansException {
 
@@ -62,12 +62,12 @@ public class SpringContextHelper implements ApplicationContextAware {
 	/***
 	 * 类似于getBean(String name)只是在参数中提供了需要返回到的类型
 	 *
-	 * @param name
-	 * @param requiredType
-	 * @return
-	 * @throws BeansException
+	 * @param <T> 参数类型的模板类
+	 * @param name 要取得的bean的名称
+	 * @param requiredType  要取得的bean的类型
+	 * @return   返回service对象，或者是bean对象
+	 * @throws BeansException  bean找不到等异常。
 	 */
-
 	public static <T> T getBean(String name,  Class<T> requiredType) throws BeansException {
 		return applicationContext.getBean(name, requiredType);
 	}
@@ -75,25 +75,24 @@ public class SpringContextHelper implements ApplicationContextAware {
 	/***
 	 * 类似于getBean(String name)只是在参数中提供了需要返回到的类型
 	 *
-	 * @param requiredType
-	 * @return
-	 * @throws BeansException
+	 * @param <T> 参数类型的模板类
+	 * @param requiredType   要取得的bean的类型
+	 * @return  返回service对象，或者是bean对象
+	 * @throws BeansException bean找不到等异常。
 	 */
-
 	public static <T> T getBean( Class<T> requiredType) throws BeansException {
 		return applicationContext.getBean(requiredType);
 	}
 
 
-
 	/***
 	 * 类似于getBean(String name)只是在参数中提供了需要返回到的类型
 	 *
-	 * @param requiredType
-	 * @return
-	 * @throws BeansException
+	 * @param name 要取得的bean的名称
+	 * @param args  要取得的bean的类型
+	 * @return   返回service对象，或者是bean对象
+	 * @throws BeansException  bean找不到等异常。
 	 */
-
 	public static Object getBean(String name, Object... args) throws BeansException {
 		return applicationContext.getBean(name, args);
 	}
@@ -102,8 +101,8 @@ public class SpringContextHelper implements ApplicationContextAware {
 	/**
 	 * 如果BeanFactory包含与名称匹配的bean定义，则返回true
 	 *
-	 * @param name
-	 * @return boolean
+	 * @param name  是否包含bean的名称
+	 * @return boolean  true--包含， false -- 不包含
 	 */
 	public static boolean containsBean(String name) {
 
@@ -114,9 +113,9 @@ public class SpringContextHelper implements ApplicationContextAware {
 	 * 判断以给定名字注册的bean定义是一个singleton还是多个prototype
 	 * 如果与给定名字相应的bean定义没有被找到，将会抛出一个个异常（NoSuchBeanDefinitionException
 	 *
-	 * @param name
-	 * @return boolean
-	 * @throws NoSuchBeanDefinitionException
+	 * @param name  是否是单一类，bean的名称
+	 * @return boolean  true -- 是  false -- 否
+	 * @throws NoSuchBeanDefinitionException bean找不到等异常
 	 */
 	public static boolean isSingleton(String name) throws NoSuchBeanDefinitionException {
 		return applicationContext.isSingleton(name);
@@ -125,7 +124,7 @@ public class SpringContextHelper implements ApplicationContextAware {
 	/**
 	 * @param name  Bean对象名称。
 	 * @return Class 注册对象的类
-	 * @throws NoSuchBeanDefinitionException
+	 * @throws NoSuchBeanDefinitionException  bean找不到等异常
 	 */
 	@SuppressWarnings("rawtypes")
 	public static Class getType(String name) throws NoSuchBeanDefinitionException {
@@ -135,9 +134,9 @@ public class SpringContextHelper implements ApplicationContextAware {
 	/**
 	 * 如果给定的bean名字在bean定义中有别名，则返回这些别名
 	 *
-	 * @param name
-	 * @return
-	 * @throws NoSuchBeanDefinitionException
+	 * @param name  bean的名称
+	 * @return  bean的别名
+	 * @throws NoSuchBeanDefinitionException  bean找不到等异常
 	 */
 	public static String[] getAliases(String name) throws NoSuchBeanDefinitionException {
 		return applicationContext.getAliases(name);
