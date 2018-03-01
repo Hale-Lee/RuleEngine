@@ -8,7 +8,7 @@ one of the best simple rule engine, easy to use, can define different format of 
         <dependency>
             <groupId>com.github.hale-lee</groupId>
             <artifactId>RuleEngine</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0</version>
         </dependency>
 
 
