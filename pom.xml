@@ -106,7 +106,7 @@
 		    <version>3.2.6</version>
 		</dependency>
  		-->
-		<!-- 数据库连接的包 -->
+		<!-- 数据库连接的包  oracle和mysql的库-->
         <dependency>
             <groupId>ojdbc</groupId>
             <artifactId>ojdbc</artifactId>

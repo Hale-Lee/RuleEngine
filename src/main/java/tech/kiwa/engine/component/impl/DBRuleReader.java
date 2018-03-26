@@ -47,11 +47,13 @@ public class DBRuleReader extends AbstractRuleReader {
 
 		if(accesser == null){
 
-			synchronized(DBAccesser.class){
-				String className = PropertyUtil.getProperty("db.accesser");
-				Class<DBAccesser> DBClass = (Class<DBAccesser>) Class.forName(className);
+			String className = PropertyUtil.getProperty("db.accesser");
+			Class<DBAccesser> DBClass = (Class<DBAccesser>) Class.forName(className);
 
-				accesser = DBClass.newInstance();
+			synchronized(DBAccesser.class){
+				if(accesser == null){
+					accesser = DBClass.newInstance();
+				}
 			}
 		}
 
