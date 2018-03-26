@@ -234,15 +234,17 @@ public class EngineService {
 
 		try {
 
-			Student st = new Student();
-			st.setAge(5);
-			st.name = "tom";
-			st.sex = 1;
+			for(int iLoop =0 ; iLoop < 1000; iLoop++){
+				Student st = new Student();
+				st.setAge(5);
+				st.name = "tom";
+				st.sex = 1;
 
-			EngineRunResult result = service.start(st);
-			System.out.println(result.getResult().getName());
+				EngineRunResult result = service.start(st);
+				System.out.println(result.getResult().getName());
 
-			System.out.println(st.getAge());
+				System.out.println(st.getAge());
+			}
 		} catch (RuleEngineException e) {
 
 			e.printStackTrace();

@@ -65,6 +65,11 @@ public class DBRuleReader extends AbstractRuleReader {
         Statement stmt = null;
         ResultSet res = null;
 
+        //缓存加载
+        if(!ruleItemCache.isEmpty()){
+        	return ruleItemCache;
+        }
+
         List<RuleItem> retList = new ArrayList<RuleItem>();
 
         String sqlStr = " select * from "+ PropertyUtil.getProperty("db.rule.table") +" where ENABLE_FLAG = 1 order by PRIORITY desc ";
@@ -111,6 +116,7 @@ public class DBRuleReader extends AbstractRuleReader {
             res.close();
             stmt.close();
 
+
             //accesser.closeConnection(conn);
 
         } catch (SQLException e) {
@@ -124,7 +130,12 @@ public class DBRuleReader extends AbstractRuleReader {
         	throw new RuleEngineException(e.getCause());
 		}
 
-        return retList;
+        //添加到缓存中。
+        synchronized(ruleItemCache){
+        	ruleItemCache.addAll(retList);
+        }
+
+        return ruleItemCache;
 
 	}
 

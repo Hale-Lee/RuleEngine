@@ -37,6 +37,7 @@ public abstract class AbstractRuleReader {
 	public abstract Long getRuleItemCount() throws RuleEngineException;
 	public abstract RuleItem getRuleItem(String ruleId) throws RuleEngineException;
 
+	protected List<RuleItem> ruleItemCache = new ArrayList<RuleItem>();
 
 	private static Logger log = LoggerFactory.getLogger(AbstractRuleReader.class);
 
@@ -111,7 +112,7 @@ public abstract class AbstractRuleReader {
 	/**
 	 * 在规则列表中查找最大的优先级
 	 * @param itemList  查找的对象列表
-	 * @return  最大的优先级	
+	 * @return  最大的优先级
 	 */
 	private int queryMaxiumPriority( List<RuleItem> itemList){
 
@@ -290,4 +291,28 @@ public abstract class AbstractRuleReader {
 		return bRet;
 	}
 
+	/**
+	 * 缓存清除的接口。
+	 */
+	public void clearRuleItemCache(){
+
+		synchronized(ruleItemCache){
+			ruleItemCache.clear();
+		}
+
+	}
+
+	public void updateRuleItem(RuleItem item){
+
+		for(int iLoop =0; iLoop <  ruleItemCache.size(); iLoop++){
+
+			RuleItem element = ruleItemCache.get(iLoop);
+
+			if(element.getItemNo().equalsIgnoreCase(item.getItemNo())){
+				synchronized(ruleItemCache){
+					ruleItemCache.set(iLoop, item);
+				}
+			}
+		}
+	}
 }

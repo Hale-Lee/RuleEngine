@@ -122,9 +122,12 @@ public class DirectDBAccesser implements DBAccesser{
 
 		if(UseDruid){
 			try {
-				if(dataSource == null){
-					dataSource = getDataSource();
+				synchronized (dataSource.getClass()){
+					if(dataSource == null){
+						dataSource = getDataSource();
+					}
 				}
+
 				return dataSource.getConnection();
 			} catch (SQLException e) {
 				log.error(e.getMessage());
@@ -148,10 +151,21 @@ public class DirectDBAccesser implements DBAccesser{
 		return openConnection();
 	}
 
-	@SuppressWarnings("unused")
-	private void closeConnection(Connection conn){
+	//@SuppressWarnings("unused")
+	public void closeConnection(Connection conn){
+
+		if(UseDruid){
+
+			try {
+				conn.close();
+
+			} catch (SQLException e) {
+				 log.debug(e.getMessage());
+			}
+		}
 
 		try {
+
 			if(conn != null && !conn.isClosed()){
 				conn.close();
 

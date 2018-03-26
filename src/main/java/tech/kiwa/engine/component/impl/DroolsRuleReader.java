@@ -341,10 +341,21 @@ public class DroolsRuleReader extends AbstractRuleReader {
 
 	@Override
 	public List<RuleItem> readRuleItemList() {
+
+        //缓存加载
+        if(!ruleItemCache.isEmpty()){
+        	return ruleItemCache;
+        }
+
 		if(builder == null){
 			readFile();
 		}
-		return builder.getRuleItemList();
+
+		synchronized(ruleItemCache){
+			ruleItemCache.addAll(builder.getRuleItemList());
+		}
+
+		return ruleItemCache;
 	}
 
 	@Override
