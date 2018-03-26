@@ -47,6 +47,12 @@ public class XMLRuleReader extends AbstractRuleReader {
 	@Override
 	public List<RuleItem> readRuleItemList() throws RuleEngineException {
 
+
+        //缓存加载
+        if(!ruleItemCache.isEmpty()){
+        	return ruleItemCache;
+        }
+
 		itemList = new ArrayList<RuleItem>();
 
 		try {
@@ -142,7 +148,11 @@ public class XMLRuleReader extends AbstractRuleReader {
 			//return null;
 		}
 
-		return itemList;
+		synchronized(ruleItemCache){
+			ruleItemCache.addAll(itemList);
+		}
+
+		return ruleItemCache;
 
 	}
 
