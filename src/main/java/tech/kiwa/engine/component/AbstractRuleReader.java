@@ -37,7 +37,7 @@ public abstract class AbstractRuleReader {
 	public abstract Long getRuleItemCount() throws RuleEngineException;
 	public abstract RuleItem getRuleItem(String ruleId) throws RuleEngineException;
 
-	protected List<RuleItem> ruleItemCache = new ArrayList<RuleItem>();
+	protected volatile List<RuleItem> ruleItemCache = new ArrayList<RuleItem>();
 
 	private static Logger log = LoggerFactory.getLogger(AbstractRuleReader.class);
 
