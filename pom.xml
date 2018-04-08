@@ -125,12 +125,14 @@
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
+				<!--
 	            <excludes>
 	                <exclude>druid.properties</exclude>
 	                <exclude>ruleEngine.properties</exclude>
 	                <exclude>ruleconfig.xml</exclude>
 	                <exclude>sample.drl</exclude>
 	            </excludes>
+	             -->
 			</resource>
 		</resources>
 		<finalName>RuleEngine</finalName>
