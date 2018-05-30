@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SpringContextHelper implements ApplicationContextAware {
 
-	private static SpringContextHelper thisInstance = null;
+	private static SpringContextHelper thisInstance = new SpringContextHelper();
 
 	private static ApplicationContext applicationContext = null;
 
