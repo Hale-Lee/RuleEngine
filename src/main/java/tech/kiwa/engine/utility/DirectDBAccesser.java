@@ -54,7 +54,7 @@ public class DirectDBAccesser implements DBAccesser{
 	}
 
 	/** The druid source. */
-    private static  DataSource dataSource = null;
+    private static volatile DataSource dataSource = null;
 
 
 
@@ -122,9 +122,12 @@ public class DirectDBAccesser implements DBAccesser{
 
 		if(UseDruid){
 			try {
-				synchronized (dataSource.getClass()){
-					if(dataSource == null){
-						dataSource = getDataSource();
+
+				if(dataSource == null){
+					synchronized (DataSource.class){
+						if(dataSource == null){
+							dataSource = getDataSource();
+						}
 					}
 				}
 
@@ -169,8 +172,10 @@ public class DirectDBAccesser implements DBAccesser{
 			if(conn != null && !conn.isClosed()){
 				conn.close();
 
-				synchronized (connList){
-					if(connList.contains(conn)){
+
+				if(connList.contains(conn)){
+
+					synchronized (connList){
 						connList.remove(conn);
 					}
 				}

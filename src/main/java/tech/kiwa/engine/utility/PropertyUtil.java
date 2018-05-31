@@ -124,9 +124,14 @@ public class PropertyUtil {
 		return prop;
 	}
 
+	private static Properties ruleEngineBuffer  =  new Properties();
 	private static String directGetProperty(String key){
 
 		final String ruleEngineFile = "ruleEngine.properties";
+
+		if(!ruleEngineBuffer.isEmpty()){
+			return ruleEngineBuffer.getProperty(key);
+		}
 
 		String value = null ;
 
@@ -139,6 +144,7 @@ public class PropertyUtil {
 				prop.load(fisResource);
 				fisResource.close();
 
+				ruleEngineBuffer.putAll(prop);
 				value = prop.getProperty(key);
 				if(null != value){
 					return value;
@@ -158,6 +164,8 @@ public class PropertyUtil {
 					Properties prop = new Properties();
 					prop.load(fis);
 					fisResource.close();
+
+					ruleEngineBuffer.putAll(prop);
 
 					value = prop.getProperty(key);
 					if(null != value){

@@ -56,11 +56,12 @@ public class DefaultRuleExecutor extends AbstractRuleItem {
 
 		if(accesser == null){
 
+			String className = PropertyUtil.getProperty("db.accesser");
+			Class<DBAccesser> DBClass = (Class<DBAccesser>) Class.forName(className);
 			synchronized(DBAccesser.class){
-				String className = PropertyUtil.getProperty("db.accesser");
-				Class<DBAccesser> DBClass = (Class<DBAccesser>) Class.forName(className);
-
-				accesser = DBClass.newInstance();
+				if(null == accesser){
+					accesser = DBClass.newInstance();
+				}
 			}
 		}
 
