@@ -26,6 +26,7 @@ import javax.tools.ToolProvider;
 
 import tech.kiwa.engine.utility.MemoryJavaFileManager.MemoryInputJavaFileObject;
 /**
+ * Java字符串编译器，将字符串对象的Java文件编译成class文件。
  * @author Hale.Li
  * @since  2018-01-28
  * @version 0.1
@@ -109,6 +110,12 @@ public class JavaStringCompiler {
         return classLoader.loadClass(name);
     }
 
+    /**
+     * 根据Java类名查找Java类。
+     * @param name	-- Java类名，简称/
+     * @return      -- Class对象
+     * @throws ClassNotFoundException
+     */
     public Class<?> queryLoadedClass(String name) throws ClassNotFoundException{
 
     	//MemoryClassLoader classLoader = new MemoryClassLoader();

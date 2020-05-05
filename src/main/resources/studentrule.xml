@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<rules >
+	<organization>
+		<url>www.kiwa.tech</url>
+	</organization>
+
+    <description>
+        Configuration for the rule list which stores the rule information in-memory and executed by rule engine service.
+    </description>
+
+    <rule id="totallist" exe_class="" method="" parent="">
+        <property name="content" value="学生年龄规则"/>
+        <property name="result" value="RESULT.REJECTED" desc="拒绝"/>
+        <property name="continue_flag" value="1"/>
+        <property name="group_express" value="( tooOld || tooSmall )"/>
+		<property name="priority" value="00010"/>
+    </rule>
+
+    <rule id="tooOld" parent="totallist">
+        <property name="content" value="学生年龄太大"/>
+        <property name="exe_sql" value="select count(1) from TL_STUDENT  where age &gt;=7 and id = ?"/>
+        <property name="param" value="id" type="java.lang.Integer" desc="学生ID"/>
+        <property name="comparison_code" value="02"/>
+        <property name="comparison_value" value="&gt;"/>
+        <property name="baseline" value="0"/>
+        <property name="baseline_desc" value="学生年龄大于7周岁"/>
+    </rule>
+
+
+    <rule id="tooSmall" exe_class="" method="" parent="totallist">
+        <property name="content" value="年龄太小"/>
+        <property name="exe_sql" value="select count(1) from TL_STUDENT  where age &lt;3 and id = ?"/>
+        <property name="param" value="id" type="java.lang.Integer" desc="学生ID"/>
+        <property name="comparison_code" value="02"/>
+        <property name="comparison_value" value="&gt;"/>
+        <property name="baseline" value="0"/>
+        <property name="baseline_desc" value="学生年龄小于3周岁"/>
+    </rule>
+
+
+
+</rules>
+

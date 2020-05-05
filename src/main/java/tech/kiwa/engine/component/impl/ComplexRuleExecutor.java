@@ -69,10 +69,23 @@ public class ComplexRuleExecutor extends AbstractRuleItem {
 
     		if("!".equals(operator)){
     			value =  !right.calculate();
+    			
     		}else if("&&".equals(operator)){
-    			value =  left.calculate() && right.calculate();
+    			
+    			boolean temp = left.calculate();
+    			if(!temp) {
+    				value = false;
+    			}else {
+    				value =  temp && right.calculate();
+    			}
     		}else if ("||".equals(operator)){
-    			value =  left.calculate() || right.calculate();
+    			
+    			boolean temp = left.calculate();
+    			if(temp) {
+    				value = true;
+    			}else {
+    				value =  temp || right.calculate();
+    			}
     		}
 
     		return value;
@@ -306,6 +319,13 @@ public class ComplexRuleExecutor extends AbstractRuleItem {
 		return newList;
 	}
 
+	/**
+	 * 分解表达式，将复杂的表达式分解成基础单元（比如：括号，简单的表达式等。）
+	 * @param list
+	 * @param current
+	 * @return
+	 * @throws RuleEngineException
+	 */
 	private ExpressionUnit breakExpress(List<OperationUnit> list, ExpressionUnit current) throws RuleEngineException{
 
 		list = trimExpress(list, -1);
@@ -404,17 +424,17 @@ public class ComplexRuleExecutor extends AbstractRuleItem {
 
 	    	boolean bRet =  root.calculate();
 
-	    	//缺省认为是 passed
-			result.setResult(RESULT.PASSED);	//通过
-			result.setRemark(RESULT.PASSED.getName());
+	    	//缺省认为是 可以继续执行下一条。
 			result.setContinue(ItemExecutedResult.CONTINUE);
 			result.setReturnValue(bRet);
 
 			if(bRet){
-				result.setResult(item.getResult());
-				result.setRemark(result.getResult().getName());
-				result.setContinue( Integer.parseInt(item.getContinueFlag()));
+				result.setResult(RESULT.PASSED);
+				result.setRemark(RESULT.PASSED.getName());
+				//result.setContinue( Integer.parseInt(item.getContinueFlag()));
 			}else{
+				result.setResult(RESULT.REJECTED);
+				result.setRemark(RESULT.REJECTED.getName());
 				// add false result return.
 			}
 

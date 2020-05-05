@@ -12,8 +12,12 @@
 //See the License for the specific language governing permissions and
 //limitations under the License.
 
+/**
+ * 
+ */
 package tech.kiwa.engine.sample;
 /**
+ * 这个类是一个例子，简单的说明了学生的几个属性：年龄，性别，姓名。
  * @author Hale.Li
  * @since  2018-01-28
  * @version 0.1

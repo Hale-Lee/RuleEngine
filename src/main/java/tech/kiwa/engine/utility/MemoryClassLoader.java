@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * 类加载器，把Java类加载到内存中。
  * @author Hale.Li
  * @since  2018-01-28
  * @version 0.1
