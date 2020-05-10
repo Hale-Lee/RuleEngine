@@ -177,31 +177,41 @@ public class DefaultRuleExecutor extends AbstractRuleItem {
 				break;
 				
 			case "java.lang.integer":
+			case "integer":
 				value = Integer.parseInt(this.object.toString());
 				break;
 			case "java.lang.long":
+			case "long":
 				value = Long.parseLong(this.object.toString());
 				break;
 			case "java.lang.boolean":
+			case "boolean":
 				value = Boolean.parseBoolean(this.object.toString());
 				break;		
 			case "java.lang.byte":
+			case "byte":
 				value = Byte.parseByte(this.object.toString());
 				break;		
 			case "java.lang.double":
+			case "dobule":
 				value = Double.parseDouble(this.object.toString());
 				break;		
-			case "java.lang.flaot":
+			case "java.lang.float":
+			case "float":
 				value = Float.parseFloat(this.object.toString());
 				break;						
 			case "java.lang.date":
+			case "date":
 				SimpleDateFormat sdf = new SimpleDateFormat(PropertyUtil.getProperty("dateFormat"));
 				value = sdf.format(this.object);
 				break;			
 			case "java.math.bigdecimal":
+			case "bigdecimal":
 				value = new BigDecimal(this.object.toString());
 				break;		
 			case "java.lang.character":
+			case "char":
+			case "character":
 				value = Character.valueOf(this.object.toString().charAt(0));
 				break;				
 			default:
