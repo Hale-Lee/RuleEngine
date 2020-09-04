@@ -20,6 +20,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -123,17 +124,19 @@ public class DefaultRuleExecutor extends AbstractRuleItem {
 		bRet = super.analyze(resultSet, item);
 
 		ItemExecutedResult checkResult = new ItemExecutedResult();
-		//缺省认为是 passed
-		checkResult.setResult(RESULT.PASSED);	//通过
-		checkResult.setRemark(RESULT.PASSED.getName());
+
+		//默认做法时可以继续执行下一条规则。
 		checkResult.setContinue(ItemExecutedResult.CONTINUE);
 		checkResult.setReturnValue(bRet);
 
 		if(bRet){
-			checkResult.setResult(item.getResult());
-			checkResult.setRemark(checkResult.getResult().getName());
-			checkResult.setContinue( Integer.parseInt(item.getContinueFlag()));
+			checkResult.setResult(RESULT.PASSED);
+			checkResult.setRemark(RESULT.PASSED.getName());
+			//checkResult.setContinue( Integer.parseInt(item.getContinueFlag()));
 		}else{
+			checkResult.setResult(RESULT.REJECTED);
+			checkResult.setRemark(RESULT.REJECTED.getName());
+			//checkResult.setContinue( Integer.parseInt(item.getContinueFlag()));			
 			// add false result return.
 		}
 
@@ -156,22 +159,66 @@ public class DefaultRuleExecutor extends AbstractRuleItem {
 		}
 	}
 
-	//改函数可以被覆盖，可以实现不同的参数传入效果
+	//TODO: 该函数可以被覆盖，可以实现不同的参数传入效果
+	
+	/**
+	 * 根据Param的类型和名称，把Object对象转换成实际的值。
+	 * @param param
+	 * @param type
+	 * @return
+	 */
 	protected Object getParamValue( String param, String type){
 
-		String value = "";
-		switch(param.toLowerCase()){
+		Object value = "";
+		switch(type.toLowerCase()){
 
-			case "customer_no":
 			case "object":
 				value = this.object.toString();
 				break;
-
+				
+			case "java.lang.integer":
+			case "integer":
+				value = Integer.parseInt(this.object.toString());
+				break;
+			case "java.lang.long":
+			case "long":
+				value = Long.parseLong(this.object.toString());
+				break;
+			case "java.lang.boolean":
+			case "boolean":
+				value = Boolean.parseBoolean(this.object.toString());
+				break;		
+			case "java.lang.byte":
+			case "byte":
+				value = Byte.parseByte(this.object.toString());
+				break;		
+			case "java.lang.double":
+			case "dobule":
+				value = Double.parseDouble(this.object.toString());
+				break;		
+			case "java.lang.float":
+			case "float":
+				value = Float.parseFloat(this.object.toString());
+				break;						
+			case "java.lang.date":
+			case "date":
+				SimpleDateFormat sdf = new SimpleDateFormat(PropertyUtil.getProperty("dateFormat"));
+				value = sdf.format(this.object);
+				break;			
+			case "java.math.bigdecimal":
+			case "bigdecimal":
+				value = new BigDecimal(this.object.toString());
+				break;		
+			case "java.lang.character":
+			case "char":
+			case "character":
+				value = Character.valueOf(this.object.toString().charAt(0));
+				break;				
 			default:
-				value = "";
+				value = this.object.toString();
 				break;
 		}
-
+		
 		return value;
 	}
 

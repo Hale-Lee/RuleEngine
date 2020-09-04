@@ -32,6 +32,7 @@ import com.alibaba.druid.util.StringUtils;
 import tech.kiwa.engine.framework.DBAccesser;
 
 /**
+ * 工具类，是一个直接链接数据库的工具，对JDBC做了简单的封装，通过设置UseDruid字段可以选择是否使用Druid连接池。默认是使用Druid连接池。
  * @author Hale.Li
  * @since  2018-01-28
  * @version 0.1
@@ -85,6 +86,10 @@ public class DirectDBAccesser implements DBAccesser{
         return dataSource;
     }
 
+    /**
+     * 打开一个数据库链接，数据库链接的属性和参数配置在druid.properites文件中。
+     * @return Connection对象，如果失败，则返回null.
+     */
 	private Connection openConnection(){
 
 		Connection conn = null;
@@ -118,6 +123,11 @@ public class DirectDBAccesser implements DBAccesser{
 		return conn;
 	}
 
+    /**
+     * 获得一个数据库链接，如果使用了Druid连接池，那么就从连接池获取一个活动的链接对象，
+     * 如果没有使用连接池，那么从链接列表中获取一个链接。
+     * @return Connection对象，如果失败，则返回null.
+     */
 	public Connection getConnection(){
 
 		if(UseDruid){
@@ -154,6 +164,10 @@ public class DirectDBAccesser implements DBAccesser{
 		return openConnection();
 	}
 
+	/**
+	 * 关闭数据库链接，如果存在没有使用的链接，则关闭它。
+	 * @param conn
+	 */
 	//@SuppressWarnings("unused")
 	public void closeConnection(Connection conn){
 

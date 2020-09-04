@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 加载属性文件，同时写到内存中。
  * @author Hale.Li
  * @since  2018-01-28
  * @version 0.1
@@ -35,6 +36,11 @@ public class PropertyUtil {
 
 	private static Logger log = LoggerFactory.getLogger(PropertyUtil.class);
 
+	/**
+	 * 获取配置属性，从内存中获取配置属性（key-value键值对），如果不存在，则尝试解析一下${}格式，再读一遍。
+	 * @param key
+	 * @return
+	 */
 	public static String getProperty(String key){
 
 		String value = directGetProperty(key);
@@ -59,7 +65,11 @@ public class PropertyUtil {
 		return value;
 	}
 
-
+	/**
+	 * 加载配置文件，从配置文件中加载到内存中。
+	 * @param fileName
+	 * @return
+	 */
 	public static Properties loadPropertFile(String fileName){
 		Properties prop = null;
 

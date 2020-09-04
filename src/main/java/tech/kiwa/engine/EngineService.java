@@ -227,23 +227,34 @@ public class EngineService {
 	}
 
 
-
+	/**
+	 * 这是一个例子，通过Student类来说明规则引擎的实际应用。
+	 * 在本例子中，我们构建了一组student对象, 同时配置一个简单的规则，如果学生年龄>7岁，或者学生年龄<3岁，则认为不可以读幼儿园， 这个时候在显示出来。
+	 * 规则配置文件时studentrule.xml，这个文件需要在ruleEngine.properties中配置。
+	 * @param args
+	 */
 	public static void main(String[] args){
 
 		EngineService service = new EngineService();
 
 		try {
+			
+			Random  rand = new Random (1);
+			
+			for(int id =2 ; id <=4; id++){
+//				Student st = new Student();
+//				st.setAge(rand.nextInt(10));
+//				st.name = "tom";
+//				st.sex = rand.nextInt(1);
 
-			for(int iLoop =0 ; iLoop < 1000; iLoop++){
-				Student st = new Student();
-				st.setAge(5);
-				st.name = "tom";
-				st.sex = 1;
-
-				EngineRunResult result = service.start(st);
+				EngineRunResult result = service.start(id);
+				
 				System.out.println(result.getResult().getName());
-
-				System.out.println(st.getAge());
+				if(result.getResult() == RESULT.PASSED) {
+					service.log.error("学生{} 不能入读本幼儿园，年龄不符合要求。",id);
+				}else {
+					service.log.info("学生{} 没有年龄不符合条件的情况。",id);
+				}
 			}
 		} catch (RuleEngineException e) {
 
