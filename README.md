@@ -95,6 +95,6 @@ rule.reader=xml/drools/database
 
 https://github.com/Hale-Lee/RuleEngine/wiki
 
-微信： kiwa-tech
+微信： tianyaguoke2000
 
 
