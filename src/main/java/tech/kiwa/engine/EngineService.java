@@ -39,6 +39,7 @@ import tech.kiwa.engine.sample.Student;
 import tech.kiwa.engine.utility.PropertyUtil;
 
 /**
+ * 入口类，所有的执行，必须从该类中开始。
  * @author Hale.Li
  * @since  2018-01-28
  * @version 0.1
@@ -87,7 +88,13 @@ public class EngineService {
 		itemService = reader;
 		return reader;
 	}
-
+	
+	/**
+	 * 启动函数，传入一个对象进来就可以比较了。
+	 * @param object
+	 * @return
+	 * @throws RuleEngineException
+	 */
 	public EngineRunResult start(Object object ) throws RuleEngineException{
 		return this.start(object, null);
 	}
@@ -96,6 +103,13 @@ public class EngineService {
 		return this.start((String)object.get("Id"), null);
 	}
 
+	/**
+	 * 启动函数，传入对象和系列号作比较。
+	 * @param object
+	 * @param sequence
+	 * @return
+	 * @throws RuleEngineException
+	 */
 	@SuppressWarnings("unchecked")
 	public EngineRunResult start(Object object , String sequence) throws RuleEngineException{
 
@@ -228,7 +242,7 @@ public class EngineService {
 
 
 	/**
-	 * 这是一个例子，通过Student类来说明规则引擎的实际应用。
+	 * 这是一个例子，通过Student类来说明规则引擎的实际应用。Student定义在TL_STUDENT中（参考数据库）
 	 * 在本例子中，我们构建了一组student对象, 同时配置一个简单的规则，如果学生年龄>7岁，或者学生年龄<3岁，则认为不可以读幼儿园， 这个时候在显示出来。
 	 * 规则配置文件时studentrule.xml，这个文件需要在ruleEngine.properties中配置。
 	 * @param args

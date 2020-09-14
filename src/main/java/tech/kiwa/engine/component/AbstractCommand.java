@@ -17,6 +17,7 @@ package tech.kiwa.engine.component;
 import tech.kiwa.engine.entity.ItemExecutedResult;
 import tech.kiwa.engine.entity.RuleItem;
 /**
+ * 命令接口，如果需要自定义Rule地执行部分，那么该部分必须从这个父类继承。
  * @author Hale.Li
  * @since  2018-01-28
  * @version 0.1
